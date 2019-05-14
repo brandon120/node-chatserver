@@ -1,0 +1,35 @@
+{
+  "name": "@voliware/node-chatserver",
+  "version": "1.0.0",
+  "author": "Anthony Agostino",
+  "description": "Node Chat Server",
+  "keywords": [
+    "chat",
+    "chatserver",
+    "chatclient",
+    "server",
+    "client",
+    "node",
+    "websocket",
+    "tcp",
+    "udp",
+    "http"
+  ],
+  "main": "app.js",
+  "dependencies": {
+    "@voliware/node-server": "^1.0.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Voliware/node-chatserver.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Voliware/node-chatserver/issues"
+  },
+  "homepage": "https://github.com/Voliware/node-chatserver",
+  "license": "GPL-3.0-only"
+}
