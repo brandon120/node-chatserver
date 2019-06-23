@@ -17,7 +17,8 @@
   ],
   "main": "app.js",
   "dependencies": {
-    "@voliware/node-server": "^1.0.2"
+    "@voliware/node-server": "latest",
+    "sqlite3": "^4.0.8"
   },
   "devDependencies": {},
   "scripts": {
