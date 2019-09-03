@@ -43,7 +43,7 @@ class ChatRoomMessageTemplateManager extends ElementManager {
      * @return {ChatRoomMessageTemplateManager}
      */
     constructor(wrapper){
-        let template = document.getElementById('chatRoomMessageTemplate');
+        let template = document.getElementById('chatroom-message-template');
         super(wrapper, template, {
             removeTemplate: false,
             removeDeadTemplates: false
@@ -110,7 +110,7 @@ class ChatRoomUserTemplateManager extends ElementManager {
      * @return {ChatRoomUserTemplateManager}
      */
     constructor(wrapper){
-        let template = document.getElementById('chatRoomUserTemplate');
+        let template = document.getElementById('chatroom-user-template');
         super(wrapper, template, {
             removeTemplate: false,
             removeDeadTemplates: false
@@ -172,9 +172,8 @@ class ChatRoomTemplate extends Template {
             }
         };
         super(Object.extend(defaults, options));
-        this.webSocketClient = null;
-        this.userManager = null;
-        this.messageManager = null;
+        this.userManager = new ChatRoomUserTemplateManager(this.elements.userList);
+        this.messageManager = new ChatRoomMessageTemplateManager(this.elements.chat);
         return this;
     }
 
@@ -186,24 +185,6 @@ class ChatRoomTemplate extends Template {
         this.attachInputHandlers();
         this.attachDomHandlers();
         this.attachButtonHandlers();
-        this.createUserManager();
-        this.createMessageManager();
-    }
-
-    /**
-     * Create the userManager
-     * @return {ChatRoomUserTemplateManager}
-     */
-    createUserManager(){
-        return this.userManager = new ChatRoomUserTemplateManager(this.elements.userList);
-    }
-
-    /**
-     * Create the MessageManager
-     * @return {ChatRoomMessageTemplateManager}
-     */
-    createMessageManager(){
-        return this.messageManager = new ChatRoomMessageTemplateManager(this.elements.chat);
     }
 
     /**
@@ -252,66 +233,6 @@ class ChatRoomTemplate extends Template {
         return this;
     }
 
-    /**
-     * Set the web socket client for the room
-     * @param {WebSocketClient}
-     * @return {ChatRoomTemplate}
-     */
-    setWebSocketClient(webSocketClient){
-        this.webSocketClient = webSocketClient;
-        this.attachWebSocketClientHandlers(webSocketClient);
-        return this;
-    }
-
-    /**
-     * Attach handlers to the web socket client
-     * @return {ChatRoomTemplate}
-     */
-    attachWebSocketClientHandlers(){
-        let self = this;
-        this.webSocketClient.on('message', function(data){
-            self.routeMessage(data);
-        });
-        return this;
-    }
-
-    /**
-     * Send a message through the web socket
-     * @param {object} message 
-     * @return {ChatRoomTemplate}
-     */
-    sendMessage(message){
-        this.webSocketClient.sendJson(message);
-        return this;
-    }
-
-    /**
-     * Route a message from the web socket client
-     * @param {object} message 
-     * @param {number} message.status
-     * @param {number} message.cmd
-     * @param {object} [message.data]
-     * @return {ChatRoomTemplate}
-     */
-    routeMessage(message){
-        if(message.status === 0){
-            console.error("bad message");
-            console.error(message);
-            return this;
-        }
-        switch(message.cmd){
-            case ChatRoomTemplate.cmd.client.add:
-                this.appendClient(message.data);
-                break;
-            case ChatRoomTemplate.cmd.client.delete:
-                this.removeClient(message.data.id);
-                break;
-            case ChatRoomTemplate.cmd.client.broadcast:
-                this.appendMessage(message.data);
-                break;
-        }
-        return this;
-    }
 
     /**
      * Serialize the message
@@ -349,7 +270,7 @@ class ChatRoomTemplate extends Template {
      */
     submit(){
         let message = this.serializeMessage();
-        this.sendMessage(message);
+        this.emit('message', message);
         this.clearInput();
         return this;
     }
@@ -423,23 +344,6 @@ class ChatRoomTemplate extends Template {
         return this;
     }
 }
-ChatRoomTemplate.cmd = {
-    client: {
-        add: 100,
-        delete: 101,
-        deleteAll: 102,
-        get: 103,
-        getAll: 104,
-        kick: 105,
-        ban: 106,
-        broadcast: 107
-    },
-    privatize: 108,
-    deprivatize: 109,
-    lock: 110,
-	unlock: 111,
-	info: 112
-};
 customElements.define('template-chatroom', ChatRoomTemplate);
 
 /**
@@ -450,26 +354,14 @@ class ChatRoomTemplateManager extends ElementManager {
 
     /**
      * Constructor
-     * @param {WebSocketClient} webSocketClient
      * @return {ChatRoomTemplateManager}
      */
-    constructor(webSocketClient){
-        let wrapper = document.getElementById('chatRoomList');
-        let template = document.getElementById('chatRoomTemplate');
+    constructor(){
+        let wrapper = document.getElementById('chatroom-list');
+        let template = document.getElementById('chatroom-template');
         super(wrapper, template, {
             removeTemplate: false
         });
-        this.webSocketClient = webSocketClient;
-        return this;
-    }
-
-    /**
-     * Set the web socket client for each tempalte.
-     * @param {Template} template 
-     * @return {Template|HTMLElement}
-     */
-    attachElementHandlers(template){
-        template.setWebSocketClient(this.webSocketClient);
         return this;
     }
 }
@@ -492,7 +384,7 @@ class Chat extends EventSystem  {
             port: 5001,
         });
         this.attachWebSocketClientHandlers();
-        this.chatRoomManager = new ChatRoomTemplateManager(this.webSocketClient);
+        this.chatRoomManager = new ChatRoomTemplateManager();
         return this;
     }
 
@@ -511,6 +403,23 @@ class Chat extends EventSystem  {
         return this;
     }
 
+   /**
+    * Route a message from the web socket client
+    * @param {object} message 
+    * @param {number} message.status
+    * @param {number} message.route
+    * @param {object} [message.data]
+    * @return {ChatRoomTemplate}
+    */
+   routeMessage(message){
+       if(message.status === 0){
+           console.error("bad message");
+           console.error(message);
+           return this;
+       }
+       return this;
+   }
+
     /**
      * Send a message through the web socket
      * @param {object} message 
@@ -522,35 +431,21 @@ class Chat extends EventSystem  {
     }
 
     /**
-     * Route a message from the web socket client
-     * @param {object} message 
-     * @param {number} message.status
-     * @param {number} message.cmd
-     * @param {object} [message.data]
-     * @return {Chat}
-     */
-    routeMessage(message){
-        if(message.status === 0){
-            console.error("bad message");
-            console.error(message);
-            return this;
-        }
-        switch(message.cmd){
-            case 2:
-                this.renderChatRooms(message.data.rooms);
-                break;
-        }
-        return this;
-    }
-
-    /**
      * Get all chat rooms
      * @return {Chat}
      */
     getChatRooms(){
-        this.webSocketClient.sendJson({
-            cmd: 2
-        });
+        let self = this;
+        fetch("/rooms")
+            .then(function(response){
+                return response.json();
+            })
+            .then(function(data){
+                self.renderChatRooms(data);
+            })
+            .catch(function(e){
+                console.error(e);
+            });
         return this;
     }
     
@@ -560,8 +455,7 @@ class Chat extends EventSystem  {
      * @return {Chat}
      */
     renderChatRooms(rooms){
-        let roomsAsObjects = ElementManager.dataArrayToDataObject(rooms);
-        this.chatRoomManager.render(roomsAsObjects);
+        this.chatRoomManager.render(rooms);
         return this;
     }
 

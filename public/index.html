@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Todo</title>
+    <title>Chat</title>
     <link rel="stylesheet" href="/css/template2.css">
     <link rel="stylesheet" href="/css/fontawesome.min.css">
     <link rel="stylesheet" href="/css/style.css">
@@ -11,7 +11,7 @@
 <body>
     <header class="hidden"></header>
     <main class="flex-center">
-        <div id="chatApp">
+        <div id="chatapp">
             <template-chatuser id="chatuser">
                 <div class="chatuser-avatar">
                     <span data-name="avatar"></span>
@@ -25,7 +25,7 @@
                     </div>
                 </div>
             </template-user>
-            <template-chatroom-message id="chatRoomMessageTemplate" class="template">
+            <template-chatroom-message id="chatroom-message-template" class="template">
                 <div class="chatroom-message-user">
                     <span data-name="avatar"></span>
                     <span data-name="user"></span>
@@ -34,7 +34,7 @@
                     <span data-name="text"></span>
                 </div>
             </template-chatroom-message>
-            <template-chatroom-user id="chatRoomUserTemplate" class="template">
+            <template-chatroom-user id="chatroom-user-template" class="template">
                 <div class="chatroom-user-avatar">
                     <span data-name="avatar"></span>
                 </div>
@@ -42,44 +42,45 @@
                     <span data-name="name"></span>
                 </div>
             </template-chatroom-user>
-            <div id="chatRoomList">
-                <h3 id="chatRoomListHeader">Chat Rooms</h3>
-                <template-chatroom id="chatRoomTemplate" class="template">
-                    <div class="chatroom-header">
-                        <div class="chatroom-icon">
-                            <div class="chatroom-img"></div>
-                            <div class="chatroom-lock"></div>
+            <template-chatroom id="chatroom-template" class="template">
+                <div class="chatroom-header">
+                    <div class="chatroom-icon">
+                        <div class="chatroom-img"></div>
+                        <div class="chatroom-lock"></div>
+                    </div>
+                    <div class="chatroom-info">
+                        <div class="chatroom-name">
+                            <span data-name="name"></span>
                         </div>
-                        <div class="chatroom-info">
-                            <div class="chatroom-name">
-                                <span data-name="name"></span>
-                            </div>
-                            <div class="chatroom-users">
-                                Users:
-                                <span data-name="clientCount"></span>   
-                                <span data-name="maxClients"></span>                                    
-                            </div>
+                        <div class="chatroom-users">
+                            Users:
+                            <span data-name="clientCount"></span>   
+                            <span data-name="maxClients"></span>                                    
                         </div>
                     </div>
-                    <div class="chatroom-room hidden">
-                        <div class="chatroom-userlist"></div>
-                        <div class="chatroom-chat"></div>
-                        <div class="chatroom-controls">
-                            <input name="text" type="text" maxlength="1024"/>
-                            <button type="submit">Send</button>
-                        </div>
+                </div>
+                <div class="chatroom-room">
+                    <div class="chatroom-userlist"></div>
+                    <div class="chatroom-chat"></div>
+                    <div class="chatroom-controls">
+                        <input name="text" type="text" maxlength="1024"/>
+                        <button type="submit">Send</button>
                     </div>
-                </template-chatroom>
+                </div>
+            </template-chatroom>
+            <div id="chatrooms">
+                <div class="chatroom-list-header">
+                    <h3 class="chatroom-list-title">Chat Rooms</h3>
+                </div>
+                <div id="chatroom-list"></div>
             </div>
         </div>
-        <script src="/js/eventSystem.js"></script>
-        <script src="/js/template2.js"></script>
-        <script src="/js/anime.min.js"></script>
-        <script src="/js/piklor.min.js"></script>
-        <script src="/js/cookie.min.js"></script>
-        <script src="/js/webSocketClient.js"></script>
-        <script src="/js/chat.js"></script>
-        <script src="/js/app.js"></script>
     </main>
+    <script src="/js/template2-bundle.min.js"></script>
+    <script src="/js/anime.min.js"></script>
+    <script src="/js/cookie.min.js"></script>
+    <script src="/js/webSocketClient.js"></script>
+    <script src="/js/chat.js"></script>
+    <script src="/js/app.js"></script>
 </body>
 </html>

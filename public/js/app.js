@@ -23,9 +23,7 @@ class App {
      * @return {App}
      */
     initialize(){
-        // setTimeout(() => {
-            this.login.initialize();
-        // }, 1800)
+        //this.login.initialize();
         return this;
     }
 }

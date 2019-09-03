@@ -1,6 +1,6 @@
 {
   "name": "@voliware/node-chatserver",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Anthony Agostino",
   "description": "Node Chat Server",
   "keywords": [
@@ -17,9 +17,9 @@
   ],
   "main": "app.js",
   "dependencies": {
-    "@voliware/logger": "^1.2.1",
-    "@voliware/node-server": "^1.1.0",
-    "mongodb": "^3.2.7"
+    "@voliware/logger": "^1.4.1",
+    "@voliware/node-server": "^1.2.3",
+    "mongodb": "^3.3.2"
   },
   "devDependencies": {},
   "scripts": {

@@ -1,11 +1,10 @@
-const Server = require('@voliware/node-server/server/server');
-const Room = require('@voliware/node-server/room/room');
+const NodeServer = require('@voliware/node-server');
 
 /**
  * Chat Server
- * @extends {Server}
+ * @extends {NodeServer.Server}
  */
-class ChatServer extends Server {
+class ChatServer extends NodeServer.Server {
 
 	/**
 	 * Constructor
@@ -31,7 +30,6 @@ class ChatServer extends Server {
      */
     attachClientHandlers(client){
 		super.attachClientHandlers(client);
-		// this isn't the best place for this
 		if(this.addClientsToGeneralChat){
 			this.generalChat.addClient(client.id, client);
 		}
@@ -43,7 +41,7 @@ class ChatServer extends Server {
 	 * @return {ChatServer}
 	 */
 	createGeneralChatRoom(){
-		let room = new Room({
+		let room = new NodeServer.Room({
 			broadcastLeavers: false,
 			owner: 'admin',
             name: ChatServer.generalChatName,

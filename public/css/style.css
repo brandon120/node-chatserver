@@ -84,18 +84,20 @@ main {
     width: 100%;
 }
 /* chat user */
-#chatUserTemplate {
+#chatuser-template {
     background:#97b7d8;
     height: 50px;
     padding: 10px;
 }
-#chatApp {
+#chatapp {
+    max-width: 860px;
+    width: 95%;
 }
-#chatRoomList {
+#chatrooms {
     background: #b2cde8;
     height: 100%;
 }
-#chatRoomListHeader {
+.chatroom-list-header {
     color: white;
     margin: 0;
     padding: 10px;
