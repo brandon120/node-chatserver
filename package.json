@@ -17,13 +17,20 @@
   ],
   "main": "app.js",
   "dependencies": {
-    "@voliware/logger": "^1.4.1",
+    "@voliware/logger": "^1.4.3",
+    "@voliware/node-build": "^1.0.3",
     "@voliware/node-server": "^1.2.3",
+    "@voliware/template2": "^1.1.1",
     "mongodb": "^3.3.2"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "mocha": "^6.2.0"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prestart": "node build",
+    "start": "node app.js",
+    "build": "node build",
+    "test": "mocha"
   },
   "repository": {
     "type": "git",

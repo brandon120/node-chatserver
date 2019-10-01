@@ -187,8 +187,7 @@ class WebSocketClient extends EventSystem {
      */
     ping(){
         this.lastPingSent = performance.now();
-        let msg = new Message({route: "/ping"});
-        return this.send(msg.serialize());
+        return this.send({route: "/ping"});
     }
 
     /**
@@ -196,8 +195,7 @@ class WebSocketClient extends EventSystem {
      * @return {WebSocketClient}
      */
     pong(){
-        let msg = new Message({route: "/pong"});
-        return this.send(msg.serialize());
+        return this.send({route: "/pong"});
     }
 
     /**

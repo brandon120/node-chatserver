@@ -192,6 +192,8 @@ class ChatRoomTemplate extends Template {
      * @return {ChatRoomTemplate}
      */
     attachInputHandlers(){
+        let self = this;
+        
         /**
          * If enter key is pressed, submit the chat text
          * @param {KeyboardEvent} event 
@@ -240,8 +242,7 @@ class ChatRoomTemplate extends Template {
      */
     serializeMessage(){
         return {
-            text: this.elements.textInput.value,
-            cmd: ChatRoomTemplate.cmd.client.broadcast
+            text: this.elements.textInput.value
         };
     }
 
@@ -363,6 +364,12 @@ class ChatRoomTemplateManager extends ElementManager {
             removeTemplate: false
         });
         return this;
+    }
+
+    attachElementHandlers(chatroom){
+        chatroom.on('message', function(message){
+            console.log(message);
+        })
     }
 }
 
